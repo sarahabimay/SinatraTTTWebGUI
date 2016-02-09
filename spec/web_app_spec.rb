@@ -13,6 +13,7 @@ RSpec.describe WebApp do
     expect(last_response.body).to include("Tic Tac Toe Game")
     expect(last_response.body).to include("Please Choose Your Game Options:")
     expect(last_response.body).to include("Board Dimensions:")
-    expect(last_response.body).to include("Player Types:")
+    expect(last_response.body).to include("THREE_BY_THREE")
+    expect(last_response.body).to include("Human Vs Human")
   end
 end
