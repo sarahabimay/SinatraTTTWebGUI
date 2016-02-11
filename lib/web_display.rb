@@ -10,10 +10,6 @@ class WebDisplay
     @board = board
   end
 
-  def formatted_board
-    format_board
-  end
-
   def display_move(move)
     @next_move = move
   end
@@ -31,25 +27,11 @@ class WebDisplay
   
   private
 
+  attr_reader :next_move
+
   def pop_move
     popped_move = next_move
     @next_move = INVALID_MOVE
     popped_move
   end
-
-  def format_board
-    result = board.board_cells.flatten.collect.with_index do |cell, index|
-      format_cells_for_display(cell, index)
-    end
-    result.each_slice(3).to_a
-  end
-
-  def format_cells_for_display(cell, index)
-    if cell.nil?
-      cell = index + OFFSET_FOR_DISPLAY
-    end
-    cell.to_s
-  end
-
-  attr_reader :next_move
 end
