@@ -1,7 +1,6 @@
 require "web_display"
 
 RSpec.describe WebDisplay do
-  let(:invalid_move) { -1 }
   let(:three_by_three) { 3 }
 
   it "has a board for display" do
@@ -22,6 +21,6 @@ RSpec.describe WebDisplay do
     display = WebDisplay.new
     display.display_move(1)
     display.ask_for_move
-    expect(display.ask_for_move).to be(invalid_move)
+    expect(display.ask_for_move).to be(WebDisplay::INVALID_MOVE)
   end
 end
