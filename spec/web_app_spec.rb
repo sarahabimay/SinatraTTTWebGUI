@@ -23,4 +23,18 @@ RSpec.describe WebApp do
     expect(last_response.body).to include("Tic Tac Toe Game : HVH")
     expect(last_response.body).to include("id=1")
   end
+
+  it "play one position  'get /game/play?position=1'" do
+    get "/game/create?dimension=THREE_BY_THREE&game_type=HVH"
+    get "/game/play?position=1"
+    expect(last_response.body).to include("X")
+  end
+
+  it "play 2 positions 'get '/game/play''" do
+    get "/game/create?dimension=THREE_BY_THREE&game_type=HVH"
+    get "/game/play?position=1"
+    get "/game/play?position=3"
+    expect(last_response.body).to include("X")
+    expect(last_response.body).to include("O")
+  end
 end

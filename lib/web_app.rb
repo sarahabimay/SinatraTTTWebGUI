@@ -3,11 +3,12 @@ require "tilt/erb"
 require "tictactoe/board_options"
 require "tictactoe/game_type_options"
 require "web_player_factory"
-require "web_game_controller"
+require "web_game_create"
 require "web_display"
 
 class WebApp < Sinatra::Base
   set :views, File.dirname(__FILE__) + '/../views'
+  set :public_folder, File.dirname(__FILE__) + '/assets'
   enable :sessions
 
   get '/' do
@@ -21,9 +22,20 @@ class WebApp < Sinatra::Base
     session[:dimension] = params["dimension"]
     @game_type = session[:game_type]
     @dimension = session[:dimension]
+
     @display = WebDisplay.new
-    @game_controller = WebGameController.new(WebPlayerFactory.new(display), display)
-    game_controller.create_game(dimension_description_to_value(dimension), game_type_description_to_value(game_type))
+    @web_game = WebGameCreate.new(WebPlayerFactory.new(display), display)
+    web_game.play(dimension_description_to_value(dimension), game_type_description_to_value(game_type), session)
+    erb :game_layout
+  end
+
+  get '/game/play' do
+    @game_type = session[:game_type]
+    @dimension = session[:dimension]
+    @display = WebDisplay.new
+    @web_game = WebGameCreate.new(WebPlayerFactory.new(display), display)
+    web_game.play(dimension_description_to_value(dimension), game_type_description_to_value(game_type), session)
+    web_game.play_move(params["position"], session)
     erb :game_layout
   end
 
@@ -37,5 +49,5 @@ class WebApp < Sinatra::Base
     TicTacToe::GameTypeOptions::ID_TO_GAME_TYPE.key(game_type_description) 
   end
 
-  attr_reader :game_controller, :display, :game_type, :dimension
+  attr_reader :web_game, :display, :game_type, :dimension
 end
