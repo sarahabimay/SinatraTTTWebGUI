@@ -43,7 +43,7 @@ class WebApp < Sinatra::Base
     params["game_type"] = session[:game_type]
     params["dimension"] = session[:dimension]
   end
-  
+
   def add_params_to_session
     session[:game_type] = params["game_type"]
     session[:dimension] = params["dimension"]
