@@ -1,19 +1,23 @@
 require "tictactoe/mark"
 require "tictactoe/board"
+require "tictactoe/board_options"
+require "tictactoe/game_type_options"
 require "web_game_create"
+require "web_display"
+require "web_player_factory"
 
 RSpec.describe WebGameCreate do
   let(:three_by_three) { "THREE_BY_THREE" }
   let(:dimension_3) { 3 }
   let(:human_v_human) { "HVH" }
-  let(:params) { { "dimension"  => three_by_three, "game_type" => human_v_human } } 
+  let(:params) { { "dimension"  => three_by_three, "game_type" => human_v_human } }
   let(:player_factory) { instance_spy(WebPlayerFactory) }
   let(:display) { instance_spy(WebDisplay) }
   let(:player1) { instance_spy(WebHumanPlayer) }
   let(:player2) { instance_spy(WebHumanPlayer) }
 
   it "creates a new game based on options" do
-    session_stub = {} 
+    session_stub = {}
     set_player_ready_state
     allow(display).to receive(:board).and_return(TicTacToe::Board.new(dimension_3))
     allow(display).to receive(:display_board)
@@ -22,8 +26,8 @@ RSpec.describe WebGameCreate do
     expect(web_game.ready_to_play?).to eq(true)
   end
 
-  it "plays a move in a specified position" do 
-    session_stub = {} 
+  it "plays a move in a specified position" do
+    session_stub = {}
     set_player_ready_state(player1_is_ready: true)
     allow(player1).to receive(:get_next_move).and_return(1)
     allow(display).to receive(:board).and_return(TicTacToe::Board.new(dimension_3))
@@ -34,7 +38,7 @@ RSpec.describe WebGameCreate do
   end
 
   it "updates session object with board state after a move" do
-    session_stub = {} 
+    session_stub = {}
     set_player_ready_state(player1_is_ready: true)
     allow(player1).to receive(:get_next_move).and_return(1)
     allow(display).to receive(:board).and_return(TicTacToe::Board.new(dimension_3))
@@ -64,7 +68,7 @@ RSpec.describe WebGameCreate do
     params["position"] = 1
     web_game.play(params, session_stub)
   end
-  
+
   it "tells web_display there is a draw " do
     session_stub = { :board_cells => ["X", "O", "X", "X", "O", "O", "O", "X", "X"] }
     board = TicTacToe::Board.new(dimension_3, session_stub[:board_cells].each_slice(3).to_a)

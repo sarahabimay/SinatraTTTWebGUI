@@ -1,4 +1,7 @@
 require "web_presenter"
+require "web_display"
+require "web_player_factory"
+require "web_game_create"
 
 RSpec.describe WebPresenter do
   let(:three_by_three) { 3 }
@@ -6,7 +9,7 @@ RSpec.describe WebPresenter do
   let(:human_v_human) { "HVH" }
   let(:x_win_announcement) { "Player X is the Winner!" }
   let(:draw_announcement) { "Game Over! The game is a Draw!" }
-  let(:params) { { "dimension"  => three_by_three_description, "game_type" => human_v_human } } 
+  let(:params) { { "dimension"  => three_by_three_description, "game_type" => human_v_human } }
   let(:display) { WebDisplay.new }
   let(:web_game) { web_game = WebGameCreate.new(WebPlayerFactory.new(display), display) }
 
