@@ -17,12 +17,7 @@ class WebGameCreate
     @dimension = dimension_description_to_value(params["dimension"]).to_i
     @game_type = game_type_description_to_value(params["game_type"])
     @game = create_game(session)
-  end
-
-  def play_move(position, session)
-    display.display_move(position)
-    game.play_turns
-    update_session_with_new_board(session, game.board)
+    play_move(params["position"], session) if !params["position"].nil?
   end
 
   private
@@ -53,6 +48,12 @@ class WebGameCreate
       board = TicTacToe::Board.new(dimension, board_cells.each_slice(dimension).to_a)
     end
     board 
+  end
+
+  def play_move(position, session)
+    display.display_move(position)
+    game.play_turns
+    update_session_with_new_board(session, game.board)
   end
 
   def update_session_with_new_board(session, board)

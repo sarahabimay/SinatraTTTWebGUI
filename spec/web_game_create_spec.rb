@@ -30,9 +30,9 @@ RSpec.describe WebGameCreate do
     allow(player2).to receive(:is_ready?).and_return(false)
     allow(player1).to receive(:get_next_move).and_return(1)
     web_game = WebGameCreate.new(player_factory, display)
-    web_game.play(params, session_stub)
     expect(display).to receive(:display_move).with(1)
-    web_game.play_move(1, session_stub)
+    params["position"] = 1
+    web_game.play(params, session_stub)
   end
 
   it "updates session object with board state after a move" do
@@ -46,9 +46,8 @@ RSpec.describe WebGameCreate do
     allow(player2).to receive(:is_ready?).and_return(false)
     allow(player1).to receive(:get_next_move).and_return(1)
     web_game = WebGameCreate.new(player_factory, display)
+    params["position"] = 1
     web_game.play(params, session_stub)
-    web_game.play_move(1, session_stub)
     expect(session_stub[:board_cells]).to eq(["X", nil, nil, nil, nil, nil, nil, nil, nil])
   end
-
 end
