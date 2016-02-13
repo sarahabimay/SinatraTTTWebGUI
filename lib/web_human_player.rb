@@ -11,6 +11,10 @@ class WebHumanPlayer
     display.ask_for_move
   end
 
+  def is_ready?
+    display.has_move?
+  end
+
   private
 
   attr_reader :display

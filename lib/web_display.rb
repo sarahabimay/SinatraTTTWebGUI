@@ -14,7 +14,7 @@ class WebDisplay
     format_board
   end
 
-  def store_next_move(move)
+  def display_move(move)
     @next_move = move
   end
 
@@ -25,11 +25,11 @@ class WebDisplay
     next_move
   end
 
-  private
-
   def has_move?
     next_move != INVALID_MOVE
   end
+  
+  private
 
   def pop_move
     popped_move = next_move
