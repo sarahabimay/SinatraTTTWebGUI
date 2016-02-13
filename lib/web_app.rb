@@ -31,7 +31,6 @@ class WebApp < Sinatra::Base
     display = WebDisplay.new
     web_game = WebGameCreate.new(WebPlayerFactory.new(display), display)
     web_game.play(params, session)
-    web_game.play_move(params["position"], session)
     @presenter = WebPresenter.new(web_game)
     erb :game_layout
   end
