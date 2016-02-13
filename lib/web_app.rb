@@ -20,8 +20,7 @@ class WebApp < Sinatra::Base
   get '/game/create' do
     add_params_to_session
     display = WebDisplay.new
-    web_game = WebGameCreate.new(WebPlayerFactory.new(display), display)
-    web_game.play(params, session)
+    web_game = WebGameCreate.new(params, session, WebPlayerFactory.new(display), display)
     @presenter = WebPresenter.new(web_game)
     erb :game_layout
   end
@@ -29,8 +28,8 @@ class WebApp < Sinatra::Base
   get '/game/play' do
     add_session_to_params
     display = WebDisplay.new
-    web_game = WebGameCreate.new(WebPlayerFactory.new(display), display)
-    web_game.play(params, session)
+    web_game = WebGameCreate.new(params, session, WebPlayerFactory.new(display), display)
+    web_game.play(params)
     @presenter = WebPresenter.new(web_game)
     erb :game_layout
   end
