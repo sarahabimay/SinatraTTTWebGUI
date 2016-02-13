@@ -24,6 +24,17 @@
         <% end %>
       </table>
     </div>
+
+      <section>
+        <h2 class="results">GAME RESULTS:</h2>
+        <p class="announcement"><%= @presenter.game_result %></p>
+      </section>
+
+      <footer>
+        <div id="restart_container">
+          <a class="restart" href="/">Start Again?</a>
+        </div>
+      </footer>
     </main>
   </body>
 </html>

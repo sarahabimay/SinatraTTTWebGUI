@@ -32,6 +32,10 @@ class WebPresenter
     format_board
   end
 
+  def game_result
+    web_game.display.result
+  end
+
   private
 
   attr_reader :web_game

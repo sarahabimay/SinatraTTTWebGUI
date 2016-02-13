@@ -17,7 +17,8 @@ class WebGameCreate
     @dimension = dimension_description_to_value(params["dimension"]).to_i
     @game_type = game_type_description_to_value(params["game_type"])
     @game = create_game(session)
-    play_move(params["position"], session) if !params["position"].nil?
+    play_move(params, session)
+    display_result
   end
 
   private
@@ -50,13 +51,27 @@ class WebGameCreate
     board 
   end
 
-  def play_move(position, session)
-    display.display_move(position)
-    game.play_turns
-    update_session_with_new_board(session, game.board)
+  def play_move(params, session)
+    position = params["position"] 
+    if !position.nil?
+      display.display_move(position)
+      game.play_turns
+      update_session_with_new_board(session, game.board)
+    end
   end
 
   def update_session_with_new_board(session, board)
     session[:board_cells] = board.board_cells.flatten
+  end
+
+  def display_result
+    if(display.board.is_game_over?)
+      display.set_game_state(is_in_play: false)
+      display.display_win(game.get_winning_mark) if winning_mark_found?
+    end
+  end
+
+  def winning_mark_found?
+    TicTacToe::Mark::is_a_mark?(game.get_winning_mark)
   end
 end
