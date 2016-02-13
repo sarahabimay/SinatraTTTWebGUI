@@ -13,11 +13,11 @@
     <main>
       <form action="/game/create" method="get">
         Board Dimensions:<br>
-        <% @dimensions.keys.each do |dimension| %>
+        <% @presenter.all_dimensions.keys.each do |dimension| %>
           <input type="radio" name="dimension" value=<%=dimension.to_s %> checked > <%= dimension.to_s %> <br>
         <% end %>
         Player Types:<br>
-        <% @game_types.each_pair do |type, description| %>
+        <% @presenter.all_game_types.each_pair do |type, description| %>
           <% if type == "HVH" %> <!-- This is temporarily limiting to HVH"-->
             <input type="radio" name="game_type" value= <%= type.to_s %> > <%= description.to_s %> <br>
           <% end %>

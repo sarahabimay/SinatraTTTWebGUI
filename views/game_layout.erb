@@ -7,15 +7,15 @@
 
   <body>
     <header>
-      <h1>Tic Tac Toe Game : <%= @game_type %></h1>
+      <h1>Tic Tac Toe Game : <%= @presenter.game_type %></h1>
     </header>
     <main>
     <div id="board_container">
       <table class="board">
-        <% @display.formatted_board.each.with_index do |row, row_index| %>
+        <% @presenter.board_cells.each.with_index do |row, row_index| %>
           <tr>
           <% row.each.with_index do |cell, cell_index| %>
-            <% position = cell_index + (row_index * display.board.dimension) + 1 %>
+            <% position = cell_index + (row_index * @presenter.board_dimension) + 1 %>
             <td class=<% cell %> id=<%= position %>>
               <a class='button' href="/game/play?position=<%= position %>"><%= cell %></a>
             </td>

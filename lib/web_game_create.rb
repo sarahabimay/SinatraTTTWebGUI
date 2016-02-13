@@ -2,18 +2,20 @@ require "tictactoe/game"
 require "tictactoe/board"
 
 class WebGameCreate
+  attr_reader :game_type, :dimension, :display
+
   def initialize(player_factory, display)
     @player_factory = player_factory
     @display = display
   end
- 
+
   def ready_to_play?
     !@game.nil?
   end
 
-  def play(dimension, game_type, session)
-    @dimension = dimension.to_i
-    @game_type = game_type
+  def play(params, session)
+    @dimension = dimension_description_to_value(params["dimension"]).to_i
+    @game_type = game_type_description_to_value(params["game_type"])
     @game = create_game(session)
   end
 
@@ -24,6 +26,16 @@ class WebGameCreate
   end
 
   private
+
+  attr_reader :player_factory, :players, :game
+
+  def dimension_description_to_value(dimension_description)
+    TicTacToe::BoardOptions::DIMENSIONS[dimension_description] 
+  end
+
+  def game_type_description_to_value(game_type_description)
+    TicTacToe::GameTypeOptions::ID_TO_GAME_TYPE.key(game_type_description) 
+  end
 
   def create_game(session)
     @players = player_factory.get_players_for_game_type(game_type)
@@ -46,6 +58,4 @@ class WebGameCreate
   def update_session_with_new_board(session, board)
     session[:board_cells] = board.board_cells.flatten
   end
-
-  attr_reader :player_factory, :game_type, :dimension, :players, :display, :game
 end
