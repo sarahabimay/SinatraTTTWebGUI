@@ -10,7 +10,7 @@
       <h2>Please Choose Your Game Options:</h1>
     </header>
     <main>
-      <form action="/" method="put">
+      <form action="/game/create" method="get">
         Board Dimensions:<br>
         <% @dimensions.keys.each do |dimension| %>
           <input type="radio" name="dimension" value=<%=dimension.to_s %> checked > <%= dimension.to_s %> <br>
