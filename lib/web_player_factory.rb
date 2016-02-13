@@ -7,7 +7,7 @@ class WebPlayerFactory
   end
 
   def get_players_for_game_type(game_type)
-    Hash[TicTacToe::Mark::X, WebHumanPlayer.new(display), TicTacToe::Mark::O, WebHumanPlayer.new(display)] 
+    Hash[TicTacToe::Mark::X, WebHumanPlayer.new(display), TicTacToe::Mark::O, WebHumanPlayer.new(display)]
   end
 
   private

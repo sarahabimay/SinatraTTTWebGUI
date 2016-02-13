@@ -4,7 +4,10 @@ require "web_app"
 
 RSpec.describe WebApp do
   include Rack::Test::Methods
- 
+
+  let(:x_win_announcement) { "Player X is the Winner!" }
+  let(:draw_announcement) { "Game Over! The game is a Draw!" }
+
   def app
     WebApp
   end
@@ -38,5 +41,29 @@ RSpec.describe WebApp do
     get "/game/play?position=3"
     expect(last_response.body).to include("X")
     expect(last_response.body).to include("O")
+  end
+
+  it "play game till win displayed" do
+    get "/game/create?dimension=THREE_BY_THREE&game_type=HVH"
+    get "/game/play?position=1"
+    get "/game/play?position=4"
+    get "/game/play?position=2"
+    get "/game/play?position=5"
+    get "/game/play?position=3"
+    expect(last_response.body).to include(x_win_announcement)
+  end
+
+  it "play game till draw displayed" do
+    get "/game/create?dimension=THREE_BY_THREE&game_type=HVH"
+    get "/game/play?position=1"
+    get "/game/play?position=2"
+    get "/game/play?position=3"
+    get "/game/play?position=5"
+    get "/game/play?position=4"
+    get "/game/play?position=6"
+    get "/game/play?position=8"
+    get "/game/play?position=7"
+    get "/game/play?position=9"
+    expect(last_response.body).to include(draw_announcement)
   end
 end

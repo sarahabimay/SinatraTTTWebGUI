@@ -26,16 +26,16 @@ class WebGameCreate
   attr_reader :player_factory, :players, :game
 
   def dimension_description_to_value(dimension_description)
-    TicTacToe::BoardOptions::DIMENSIONS[dimension_description] 
+    TicTacToe::BoardOptions::DIMENSIONS[dimension_description]
   end
 
   def game_type_description_to_value(game_type_description)
-    TicTacToe::GameTypeOptions::ID_TO_GAME_TYPE.key(game_type_description) 
+    TicTacToe::GameTypeOptions::ID_TO_GAME_TYPE.key(game_type_description)
   end
 
   def create_game(session)
     @players = player_factory.get_players_for_game_type(game_type)
-    board = create_board(dimension, session) 
+    board = create_board(dimension, session)
     display.display_board(board)
     @game = TicTacToe::Game.new(board, game_type, display, players)
   end
@@ -48,11 +48,11 @@ class WebGameCreate
     else
       board = TicTacToe::Board.new(dimension, board_cells.each_slice(dimension).to_a)
     end
-    board 
+    board
   end
 
   def play_move(params, session)
-    position = params["position"] 
+    position = params["position"]
     if !position.nil?
       display.display_move(position)
       game.play_turns
