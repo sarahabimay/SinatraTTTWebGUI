@@ -43,6 +43,14 @@ RSpec.describe WebApp do
     expect(last_response.body).to include("O")
   end
 
+  it "play a move then 'start again'" do
+    get "/game/create?dimension=THREE_BY_THREE&game_type=HVH"
+    get "/game/play?position=1"
+    get "/"
+    expect(last_response.body).not_to include("X")
+    expect(last_response.body).not_to include("O")
+  end
+
   it "play game till win displayed" do
     get "/game/create?dimension=THREE_BY_THREE&game_type=HVH"
     get "/game/play?position=1"

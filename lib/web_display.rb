@@ -16,6 +16,21 @@ class WebDisplay
     @next_move = move
   end
 
+  def display_result
+    if(board.is_game_over?)
+      set_game_state(is_in_play: false)
+      display_win(board.get_winning_mark)
+    end
+  end
+
+  def display_win(mark)
+    @winning_mark = mark
+  end
+
+  def board_cells
+    board.board_cells if !board.nil?
+  end
+
   def ask_for_move
     if has_move?
       return pop_move
@@ -25,10 +40,6 @@ class WebDisplay
 
   def has_move?
     next_move != INVALID_MOVE
-  end
-
-  def display_win(mark)
-    @winning_mark = mark
   end
 
   def set_game_state(is_in_play: true)

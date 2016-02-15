@@ -1,15 +1,17 @@
 require "tictactoe/game"
+require "tictactoe/game_type_options"
+require "tictactoe/board_options"
 require "tictactoe/board"
 
 class WebGameCreate
-  attr_reader :game_type, :dimension, :display
+  attr_reader :game_type, :dimension, :display, :game
 
-  def initialize(params, session, player_factory, display)
-    @session = session
+  def initialize(params, player_factory, display)
     @player_factory = player_factory
     @display = display
     @dimension = dimension_description_to_value(params["dimension"]).to_i
     @game_type = game_type_description_to_value(params["game_type"])
+    @board_cells = params["board_cells"]
     @game = create_game
   end
 
@@ -17,14 +19,9 @@ class WebGameCreate
     !@game.nil?
   end
 
-  def play(params)
-    play_move(params)
-    display_result
-  end
-
   private
 
-  attr_reader :player_factory, :players, :game, :session
+  attr_reader :player_factory, :players, :board_cells
 
   def dimension_description_to_value(dimension_description)
     TicTacToe::BoardOptions::DIMENSIONS[dimension_description]
@@ -42,37 +39,11 @@ class WebGameCreate
   end
 
   def create_board(dimension)
-    board_cells = session[:board_cells]
     if board_cells.nil?
       board = TicTacToe::Board.new(dimension)
-      update_session_with_new_board(board)
     else
       board = TicTacToe::Board.new(dimension, board_cells.each_slice(dimension).to_a)
     end
     board
-  end
-
-  def play_move(params)
-    position = params["position"]
-    if !position.nil?
-      display.display_move(position)
-      game.play_turns
-      update_session_with_new_board(game.board)
-    end
-  end
-
-  def update_session_with_new_board(board)
-    session[:board_cells] = board.board_cells.flatten
-  end
-
-  def display_result
-    if(display.board.is_game_over?)
-      display.set_game_state(is_in_play: false)
-      display.display_win(game.get_winning_mark) if winning_mark_found?
-    end
-  end
-
-  def winning_mark_found?
-    TicTacToe::Mark::is_a_mark?(game.get_winning_mark)
   end
 end
