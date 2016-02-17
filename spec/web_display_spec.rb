@@ -24,6 +24,16 @@ RSpec.describe WebDisplay do
     expect(display.ask_for_move).to be(WebDisplay::INVALID_MOVE)
   end
 
+  it "display_result displays Winning Announcement " do
+    row1 = ["X", "X", "X"]
+    row2 = ["O", "O", nil]
+    row3 = [nil, nil, nil]
+    winning_board = [ row1, row2, row3 ]
+    board = TicTacToe::Board.new(three_by_three, winning_board)
+    display.display_board(board)
+    expect(display.display_result).to eq(TicTacToe::Mark::X)
+  end
+
   it "receives winning mark" do
     display.set_game_state(is_in_play: false)
     display.display_win(TicTacToe::Mark::X)

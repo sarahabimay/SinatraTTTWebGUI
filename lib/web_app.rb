@@ -4,6 +4,7 @@ require "tictactoe/board_options"
 require "tictactoe/game_type_options"
 require "web_player_factory"
 require "web_game_create"
+require "web_game_play"
 require "web_display"
 require "web_presenter"
 
@@ -19,17 +20,18 @@ class WebApp < Sinatra::Base
 
   get '/game/create' do
     add_params_to_session
-    display = WebDisplay.new
-    web_game = WebGameCreate.new(params, session, WebPlayerFactory.new(display), display)
+    @display = WebDisplay.new
+    web_game = WebGameCreate.new(params, WebPlayerFactory.new(display), display)
+    add_current_board_to_session
     @presenter = WebPresenter.new(web_game)
     erb :game_layout
   end
 
   get '/game/play' do
     add_session_to_params
-    display = WebDisplay.new
-    web_game = WebGameCreate.new(params, session, WebPlayerFactory.new(display), display)
-    web_game.play(params)
+    @display = WebDisplay.new
+    web_game = WebGamePlay.new(params, WebGameCreate.new(params, WebPlayerFactory.new(display), display)).web_game
+    add_current_board_to_session
     @presenter = WebPresenter.new(web_game)
     erb :game_layout
   end
@@ -41,10 +43,15 @@ class WebApp < Sinatra::Base
   def add_session_to_params
     params["game_type"] = session[:game_type]
     params["dimension"] = session[:dimension]
+    params["board_cells"] = session[:board_cells]
   end
 
   def add_params_to_session
     session[:game_type] = params["game_type"]
     session[:dimension] = params["dimension"]
+  end
+
+  def add_current_board_to_session
+    session[:board_cells] = display.board_cells.flatten
   end
 end
